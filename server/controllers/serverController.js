@@ -1,16 +1,38 @@
 'use strict'
 
+/** Model Required */
+const CameraModel = require('../models/cameras');
+
 /** Controller Function */
 async function serverController (req, res, next) {
     
-    console.log(req.body);
-    
-    res.status(200).json({
-        data: 'Request received from client'
-    });
+    try {
+        const dataService = await CameraModel.create({
+            microservice_reference: req.body.ref,
+            name: req.body.name,
+            event: req.body.event,
+            event_id: req.body.eventId,
+            socket_id: req.body.requestId,
+            in: req.body.countersData[0].in,
+            out: req.body.countersData[0].out
+        });
+
+        res.status(200).json({
+            data: dataService,
+            message: 'Database register create successfully'
+        });
+    } catch (error) {
+        res.status(400).json({
+            data: error
+        });   
+    }
 };
 
-/** Aux Function */
+async function testController (req, res, next) {
+    res.render('index', { title: 'Juliana' });
+}
+
+/** Aux Functions */
 function randomValue(payload, events) {
     let eventIndex = null;
 
@@ -33,5 +55,6 @@ function randomValue(payload, events) {
 
 module.exports = {
     serverController,
+    testController,
     randomValue
 }

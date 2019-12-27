@@ -6,7 +6,7 @@ const axios = require('axios');
 const socket = io.connect('http://127.0.0.1:3001');
 
 /** Assigned ID to this microservice */
-const microServiceID = 101
+const microServiceID = 101;
 
 /** Listeners */
 socket.on('connect', () => {
@@ -18,7 +18,7 @@ socket.on('serverTransfer', (data) => {
 });
 
 /** Interval Functions */
-setInterval(countModuleAction, 5000);
+setInterval(countModuleAction, 20000);
 
 /** Aux function - Emiter implemented */
 function countModuleAction() {
@@ -38,7 +38,7 @@ async function updateRequest(url, data) {
         let response = await axios.post(url, data);
         let responseData = response.data;
 
-        console.log(responseData);
+        console.log(response.status);
     } catch (error) {
         console.log(`${error.response} - Verify your endpoint`);
     }

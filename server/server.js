@@ -7,16 +7,24 @@ const server = express();
 
 /** Required Project Files */
 const serverController = require('./controllers/serverController');
+const sequelizeInstance = require('./configs/databaseConnection');
 
-/** Events -(Must move this part to another file) */
+/** Events */
 let events = require('./utils/events');
-console.log(events);
 
 /** Server set */
+const dbConnection = sequelizeInstance.getSequelizeConnection();
 server.set('port', 3001);
+server.set('view engine', 'pug');
 
 /** Middlewares */
 server.use(bodyParser.json());
+
+if (dbConnection) {
+    console.log(`DB Connection established! => ${dbConnection.config.database} - PORT: ${dbConnection.config.port}`);
+} else {
+    console.log('DB Connection ERROR => ', dbConnection);
+}
 
 /** Routes */
 server.use('/api/v1', require('./routes/router'));
@@ -33,7 +41,11 @@ const SocketIO = require('socket.io');
 const io = SocketIO(serverSocket);
 
 io.on('connection', (socket) => {
-    console.log('New Connection', socket.id);
+    console.log('New Client Connection', socket.id);
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
 
     socket.on('clientTransfer', (data) => {
         serverController.randomValue(data, events);
@@ -46,5 +58,5 @@ io.on('connection', (socket) => {
             requestId: data.requestId,
             countersData: events
         });
-    })
+    });
 });

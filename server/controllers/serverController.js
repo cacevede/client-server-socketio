@@ -28,7 +28,7 @@ async function serverController (req, res, next) {
     }
 };
 
-async function testController (req, res, next) {
+async function viewController (req, res, next) {
     res.render('index', { title: 'Juliana' });
 }
 
@@ -55,6 +55,6 @@ function randomValue(payload, events) {
 
 module.exports = {
     serverController,
-    testController,
+    viewController,
     randomValue
 }

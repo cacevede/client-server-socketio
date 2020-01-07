@@ -3,6 +3,7 @@
 /** Required Packages */
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const server = express();
 
 /** Required Project Files */
@@ -19,6 +20,7 @@ server.set('view engine', 'pug');
 
 /** Middlewares */
 server.use(bodyParser.json());
+server.use(express.static(path.resolve(__dirname, 'public')));
 
 if (dbConnection) {
     console.log(`DB Connection established! => ${dbConnection.config.database} - PORT: ${dbConnection.config.port}`);
@@ -27,7 +29,7 @@ if (dbConnection) {
 }
 
 /** Routes */
-server.use('/api/v1', require('./routes/router'));
+server.use(require('./routes/router'));
 
 /** Server Init */
 const serverSocket = server.listen(server.get('port'), () => {

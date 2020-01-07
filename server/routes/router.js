@@ -1,10 +1,9 @@
 'use strict'
 
 const router = require('express').Router();
-const { serverController, testController } = require('../controllers/serverController');
+const { serverController, viewController } = require('../controllers/serverController');
 
 router.post('/request', serverController);
-
-router.get('/show', testController);
+router.get('/show', viewController);
 
 module.exports = router;

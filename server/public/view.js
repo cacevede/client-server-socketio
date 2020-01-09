@@ -1,5 +1,7 @@
-var socket = io();
+let socket = io();
 
-socket.on('serverTransfer', function (data) {
-    console.log('Im listening :D');
+console.log(socket);
+
+socket.on('serverTransfer', (data) => {
+    document.write(data);
 });
